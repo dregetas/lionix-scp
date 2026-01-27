@@ -1,20 +1,14 @@
-import { invoke } from "@tauri-apps/api/tauri"
+import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react"
+import Controls from "./components/Controls";
+import Console from "./components/Console";
 
 function App() {
-  const [msg, setMsg] = useState("")
-
-  async function callRust() {
-    const res = await invoke("greet", { name: "Максим" })
-    setMsg(res)
-  }
-
   return (
-    <div>
-      <h1>Tauri + React</h1>
-      <button onClick={callRust}>Викликати Rust</button>
-      <p>{msg}</p>
-    </div>
+    <>
+    <Controls />
+    <Console />
+    </>
   )
 }
 

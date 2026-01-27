@@ -1,6 +1,16 @@
-// Prevents additional console window on Windows in release, DO NOT REMOVE!!
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+mod commands;
+mod state;
+
+use state::ServerState;
 
 fn main() {
-  app_lib::run();
+    tauri::Builder::default()
+        .manage(std::sync::Mutex::new(ServerState::new()))
+        .invoke_handler(tauri::generate_handler![
+            commands::start_server,
+            commands::send_command,
+            commands::stop_server,
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri app");
 }
