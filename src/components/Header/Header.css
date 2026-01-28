@@ -1,0 +1,36 @@
+.header {
+  height: 56px;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  user-select: none;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.header-nav {
+  display: flex;
+  gap: 12px;
+}
+
+.header-nav button {
+  background: none;
+  border: none;
+  color: #cbd5f5;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.header-nav button:hover {
+  background: #1e293b;
+  color: white;
+}

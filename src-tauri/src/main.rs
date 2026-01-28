@@ -1,16 +1,11 @@
-mod commands;
-mod state;
-
-use state::ServerState;
+// Prevents additional console window on Windows in release, DO NOT REMOVE!!
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 fn main() {
-    tauri::Builder::default()
-        .manage(std::sync::Mutex::new(ServerState::new()))
-        .invoke_handler(tauri::generate_handler![
-            commands::start_server,
-            commands::send_command,
-            commands::stop_server,
-        ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri app");
+  app_lib::run();
+  start_server();
+}
+#[tauri::command]
+fn start_server() {
+  println!("Server started!");
 }

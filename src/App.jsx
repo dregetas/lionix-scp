@@ -1,13 +1,13 @@
-import { invoke } from "@tauri-apps/api/core";
-import { useState } from "react"
-import Controls from "./components/Controls";
-import Console from "./components/Console";
+import { useState } from 'react'
+import Dashboard from './pages/Dashboard/Dashboard'
+import reactLogo from './assets/react.svg'
+import './App.css'
 
 function App() {
+
   return (
     <>
-    <Controls />
-    <Console />
+      <Dashboard />
     </>
   )
 }

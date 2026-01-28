@@ -1,0 +1,24 @@
+.dashboard {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 16px;
+  background: #020617;
+  color: white;
+  overflow-y: auto;
+}
+.page-title {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 600;
+}
