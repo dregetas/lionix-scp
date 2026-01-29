@@ -8,6 +8,9 @@ Download Panel:
 
 - [Developer](https://github.com/dregetas)
 
+![image](/src/assets/window.png)
+
+
 <!-- ## React Compiler
 
 The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
