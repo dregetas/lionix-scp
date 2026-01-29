@@ -9,6 +9,7 @@ Download Panel:
 - [Developer](https://github.com/dregetas)
 
 ![image](/src/assets/window.png)
+![image](/src/assets/console.png)
 
 
 <!-- ## React Compiler
