@@ -1,0 +1,20 @@
+{
+  "server_dir": "/home/maksym/server",
+  "jar": "server.jar",
+
+  "java": {
+    "path": "java",
+    "min_ram_mb": 1024,
+    "max_ram_mb": 4096,
+    "args": [
+      "-XX:+UseG1GC",
+      "-XX:+ParallelRefProcEnabled",
+      "-XX:MaxGCPauseMillis=200"
+    ]
+  },
+
+  "ui": {
+    "max_players": 20,
+    "auto_scroll_console": true
+  }
+}
