@@ -2,7 +2,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::{
-    fs,
     io::{BufRead, BufReader, Write},
     process::{Child, Command, Stdio},
     sync::Mutex,
@@ -10,16 +9,49 @@ use std::{
     time::Instant,
 };
 
-use once_cell::sync::OnceCell;
+use once_cell::sync::{Lazy, OnceCell};
 use regex::Regex;
 use tauri::{AppHandle, Emitter};
 
+// ---------------- CONFIG ----------------
+
+const SERVER_DIR: &str = "/home/maksym/server";
+const SERVER_CMD: &str = "java -jar server.jar nogui";
+
 // ---------------- GLOBALS ----------------
 
-static SERVER_PROCESS: Mutex<Option<Child>> = Mutex::new(None);
-static SERVER_STATUS: Mutex<String> = Mutex::new(String::new());
-static SERVER_START: Mutex<Option<Instant>> = Mutex::new(None);
+static SERVER_PROCESS: Lazy<Mutex<Option<Child>>> =
+    Lazy::new(|| Mutex::new(None));
+
+static SERVER_STATUS: Lazy<Mutex<String>> =
+    Lazy::new(|| Mutex::new("offline".to_string()));
+
+static SERVER_START: Lazy<Mutex<Option<Instant>>> =
+    Lazy::new(|| Mutex::new(None));
+
+static PLAYERS: Lazy<Mutex<String>> =
+    Lazy::new(|| Mutex::new("0/0".to_string()));
+
+static LOGS: Lazy<Mutex<Vec<String>>> =
+    Lazy::new(|| Mutex::new(Vec::with_capacity(1000)));
+
 static APP_HANDLE: OnceCell<AppHandle> = OnceCell::new();
+
+// ---------------- HELPERS ----------------
+
+fn push_log(line: String) {
+    let mut logs = LOGS.lock().unwrap();
+
+    if logs.len() >= 1000 {
+        logs.remove(0);
+    }
+
+    logs.push(line.clone());
+
+    if let Some(app) = APP_HANDLE.get() {
+        let _ = app.emit("server-log", line);
+    }
+}
 
 // ---------------- COMMANDS ----------------
 
@@ -33,55 +65,75 @@ fn start_server() -> String {
 
     *SERVER_STATUS.lock().unwrap() = "starting".into();
 
-    let child = Command::new("bash")
+    let mut child = match Command::new("bash")
         .arg("-c")
-        .arg("cd /home/haku/server && java -jar server.jar nogui")
+        .arg(format!("cd {} && {}", SERVER_DIR, SERVER_CMD))
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
-        .spawn();
-
-    match child {
-        Ok(mut process) => {
-            // ---------- STDOUT ----------
-            if let Some(stdout) = process.stdout.take() {
-                thread::spawn(move || {
-                    let reader = BufReader::new(stdout);
-
-                    for line in reader.lines().flatten() {
-                        if line.contains("Done (") {
-                            *SERVER_STATUS.lock().unwrap() = "online".into();
-                            *SERVER_START.lock().unwrap() = Some(Instant::now());
-                        }
-
-                        if let Some(app) = APP_HANDLE.get() {
-                            app.emit("server-log", line).ok();
-                        }
-                    }
-                });
-            }
-
-            // ---------- STDERR ----------
-            if let Some(stderr) = process.stderr.take() {
-                thread::spawn(move || {
-                    let reader = BufReader::new(stderr);
-
-                    for line in reader.lines().flatten() {
-                        if let Some(app) = APP_HANDLE.get() {
-                            app.emit("server-log", format!("ERROR: {}", line)).ok();
-                        }
-                    }
-                });
-            }
-
-            *server = Some(process);
-            "Server started".into()
-        }
+        .spawn()
+    {
+        Ok(p) => p,
         Err(e) => {
             *SERVER_STATUS.lock().unwrap() = "offline".into();
-            format!("Failed: {}", e)
+            return format!("Failed to start server: {}", e);
         }
+    };
+
+    let stdout = child.stdout.take();
+    let stderr = child.stderr.take();
+    let mut stdin = child.stdin.take();
+
+    let player_re = Regex::new(
+        r"There are (\d+) of (?:a max of )?(\d+) players online"
+    ).unwrap();
+
+    // ---------- STDOUT ----------
+    if let Some(stdout) = stdout {
+        thread::spawn(move || {
+            let reader = BufReader::new(stdout);
+
+            for line in reader.lines().flatten() {
+
+                // ---- SERVER READY ----
+                if line.contains("Done (") {
+                    *SERVER_STATUS.lock().unwrap() = "online".into();
+                    *SERVER_START.lock().unwrap() = Some(Instant::now());
+
+                    // одразу просимо список гравців
+                    if let Some(stdin) = stdin.as_mut() {
+                        let _ = stdin.write_all(b"list\n");
+                    }
+                }
+
+                // ---- PLAYERS ----
+                if let Some(caps) = player_re.captures(&line) {
+                    let value = format!("{}/{}", &caps[1], &caps[2]);
+                    *PLAYERS.lock().unwrap() = value.clone();
+
+                    if let Some(app) = APP_HANDLE.get() {
+                        let _ = app.emit("players-update", value);
+                    }
+                }
+
+                push_log(line);
+            }
+        });
     }
+
+    // ---------- STDERR ----------
+    if let Some(stderr) = stderr {
+        thread::spawn(move || {
+            let reader = BufReader::new(stderr);
+
+            for line in reader.lines().flatten() {
+                push_log(format!("ERROR: {}", line));
+            }
+        });
+    }
+
+    *server = Some(child);
+    "Server started".into()
 }
 
 #[tauri::command]
@@ -89,10 +141,13 @@ fn stop_server() -> String {
     let mut server = SERVER_PROCESS.lock().unwrap();
 
     if let Some(child) = server.as_mut() {
-        child.kill().ok();
+        let _ = child.kill();
         *server = None;
+
         *SERVER_STATUS.lock().unwrap() = "offline".into();
         *SERVER_START.lock().unwrap() = None;
+        *PLAYERS.lock().unwrap() = "0/0".into();
+
         "Server stopped".into()
     } else {
         "Server not running".into()
@@ -108,13 +163,7 @@ fn restart_server() -> String {
 
 #[tauri::command]
 fn get_status() -> String {
-    let status = SERVER_STATUS.lock().unwrap();
-
-    if status.is_empty() {
-        "offline".into()
-    } else {
-        status.clone()
-    }
+    SERVER_STATUS.lock().unwrap().clone()
 }
 
 // ---------------- CONSOLE ----------------
@@ -135,6 +184,11 @@ fn send_command(cmd: String) -> Result<(), String> {
     Err("Server not running".into())
 }
 
+#[tauri::command]
+fn get_logs() -> Vec<String> {
+    LOGS.lock().unwrap().clone()
+}
+
 // ---------------- PLAYERS ----------------
 
 #[tauri::command]
@@ -150,19 +204,7 @@ fn request_players() {
 
 #[tauri::command]
 fn get_players() -> String {
-    let log_path = "/home/haku/server/logs/latest.log";
-
-    if let Ok(content) = fs::read_to_string(log_path) {
-        let re = Regex::new(r"There are (\d+) of (\d+) players online").unwrap();
-
-        for line in content.lines().rev() {
-            if let Some(caps) = re.captures(line) {
-                return format!("{}/{}", &caps[1], &caps[2]);
-            }
-        }
-    }
-
-    "0/0".into()
+    PLAYERS.lock().unwrap().clone()
 }
 
 // ---------------- RAM (MB) ----------------
@@ -180,7 +222,7 @@ fn get_ram_usage() -> f64 {
                     let parts: Vec<&str> = line.split_whitespace().collect();
                     if let Some(kb) = parts.get(1) {
                         let kb: f64 = kb.parse().unwrap_or(0.0);
-                        return kb / 1024.0; // KB → MB
+                        return kb / 1024.0;
                     }
                 }
             }
@@ -194,10 +236,11 @@ fn get_ram_usage() -> f64 {
 
 #[tauri::command]
 fn get_uptime() -> u64 {
-    if let Some(start) = SERVER_START.lock().unwrap().as_ref() {
-        return start.elapsed().as_secs();
-    }
-    0
+    SERVER_START
+        .lock()
+        .unwrap()
+        .map(|s| s.elapsed().as_secs())
+        .unwrap_or(0)
 }
 
 // ---------------- APP ----------------
@@ -214,6 +257,7 @@ pub fn run() {
             restart_server,
             get_status,
             send_command,
+            get_logs,
             request_players,
             get_players,
             get_ram_usage,

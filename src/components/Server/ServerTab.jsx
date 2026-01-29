@@ -3,15 +3,26 @@ import { invoke } from "@tauri-apps/api/core";
 import "./ServerTab.css";
 
 const ServerTab = () => {
+  // ================= STATE =================
+
   const [status, setStatus] = useState("offline");
   const [players, setPlayers] = useState("0/0");
 
-  // RAM in MB
+  // RAM (MB)
   const [ramUsed, setRamUsed] = useState(0);
   const ramMax = 4096; // 4 GB
 
   // UPTIME
   const [uptime, setUptime] = useState(0);
+
+  // ================= HELPERS =================
+
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = sec % 60;
+    return `${h}h ${m}m ${s}s`;
+  }
 
   // ================= RAM =================
 
@@ -39,7 +50,6 @@ const ServerTab = () => {
   // ================= PLAYERS =================
 
   async function fetchPlayers() {
-    await invoke("request_players");
     const res = await invoke("get_players");
     setPlayers(res);
   }
@@ -65,19 +75,13 @@ const ServerTab = () => {
 
   async function fetchUptime() {
     const res = await invoke("get_uptime");
-    setUptime(res);
-  }
-
-  function formatTime(sec) {
-    const h = Math.floor(sec / 3600);
-    const m = Math.floor((sec % 3600) / 60);
-    const s = sec % 60;
-    return `${h}h ${m}m ${s}s`;
+    setUptime(Number(res));
   }
 
   // ================= INTERVALS =================
 
   useEffect(() => {
+    // initial fetch
     fetchStatus();
     fetchPlayers();
     fetchRam();
