@@ -4,6 +4,8 @@
   border-right: 1px solid #1e293b;
   padding: 12px 8px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-list {
@@ -41,4 +43,68 @@
 .sidebar-list button.active {
   background: #2563eb;
   color: white;
+}
+
+/* container */
+.sidebar-version {
+  margin-top: auto;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: 0.2s ease;
+
+  animation: glow 3s infinite alternate;
+}
+
+.sidebar-version:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+/* Version text */
+.version-text {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+/* Build badges */
+.build-type {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+/* Alpha */
+.build-type.alpha {
+  background: linear-gradient(135deg, #7c3aed, #6366f1);
+  box-shadow: 0 0 10px rgba(124,58,237,0.7);
+}
+
+/* Beta */
+.build-type.beta {
+  background: linear-gradient(135deg, #0ea5e9, #22d3ee);
+  box-shadow: 0 0 10px rgba(34,211,238,0.7);
+}
+
+/* Release */
+.build-type.release {
+  background: linear-gradient(135deg, #16a34a, #4ade80);
+  box-shadow: 0 0 10px rgba(74,222,128,0.7);
+}
+
+/* Glow animation */
+@keyframes glow {
+  from {
+    text-shadow: 0 0 6px rgba(96,165,250,0.3);
+  }
+  to {
+    text-shadow: 0 0 14px rgba(96,165,250,0.7);
+  }
 }

@@ -1,0 +1,62 @@
+.console-page {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.console-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 6px;
+}
+
+.console-toolbar button {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.console-toolbar button:hover {
+  background: #333;
+}
+
+/* colors */
+
+.log-line {
+  color: #ccc;
+}
+
+.log-line.info {
+  color: #00ff00;
+}
+
+.log-line.warn {
+  color: #ffcc00;
+}
+
+.log-line.error {
+  color: #ff4444;
+}
+
+.console-log {
+  flex: 1;
+  background: #000;
+  color: #00ff00;
+  padding: 12px;
+  font-family: monospace;
+  overflow-y: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.console-input {
+  padding: 10px;
+  background: #111;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  outline: none;
+}
