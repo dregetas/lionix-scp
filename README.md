@@ -8,8 +8,11 @@ Download Panel:
 
 - [Developer](https://github.com/dregetas)
 
-![image](/src/assets/window.png)
-![image](/src/assets/console.png)
+![image](/src/assets/Dashboard.png)
+![image](/src/assets/Options.png)
+![image](/src/assets/Console.png)
+![image](/src/assets/Settings.png)
+![image](/src/assets/About.png)
 
 
 <!-- ## React Compiler
