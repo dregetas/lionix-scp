@@ -1,0 +1,182 @@
+.settings-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.settings-window {
+  background: #2c3440;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: popup 0.25s ease;
+}
+
+@keyframes popup {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ===== HEADER ===== */
+
+.settings-window header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #3a4450;
+}
+
+.settings-window h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.settings-close {
+  background: none;
+  border: none;
+  color: #8b95a5;
+  font-size: 24px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.settings-close:hover {
+  background: #3a4450;
+  color: #fff;
+}
+
+/* ===== CONTENT ===== */
+
+.settings-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ===== FORM GROUP ===== */
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ===== LABELS ===== */
+
+.settings-window label {
+  font-size: 14px;
+  color: #b0b8c4;
+  font-weight: 500;
+}
+
+/* ===== INPUTS ===== */
+
+.settings-window input,
+.settings-window select {
+  background: #232931;
+  border: 1px solid #3a4450;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.settings-window input:hover,
+.settings-window select:hover {
+  border-color: #4a5460;
+}
+
+.settings-window input:focus,
+.settings-window select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background: #1a1f27;
+}
+
+.settings-window input::placeholder {
+  color: #6b7280;
+}
+
+/* ===== SELECT ===== */
+
+.settings-window select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='%238b95a5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.settings-window option {
+  background: #232931;
+  color: white;
+}
+
+/* ===== ERROR MESSAGE ===== */
+
+.settings-error {
+  background: #ff4444;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+/* ===== SAVE BUTTON ===== */
+
+.settings-save {
+  margin-top: 8px;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.settings-save:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.settings-save:active {
+  transform: translateY(0);
+}

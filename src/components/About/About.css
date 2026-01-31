@@ -1,0 +1,159 @@
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.about-window {
+  background: #2c3440;
+  border-radius: 12px;
+  width: 450px;
+  max-width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+}
+
+.about-window header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #3a4450;
+}
+
+.about-window h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.about-close {
+  background: none;
+  border: none;
+  color: #8b95a5;
+  font-size: 24px;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.about-close:hover {
+  background: #3a4450;
+  color: #fff;
+}
+
+.about-content {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.about-logo {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.about-window h3 {
+  margin: 0 0 8px 0;
+  color: #fff;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.about-version {
+  color: #8b95a5;
+  font-size: 14px;
+  margin: 0 0 24px 0;
+}
+
+.about-info {
+  background: #232931;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.about-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #3a4450;
+}
+
+.about-row:last-child {
+  border-bottom: none;
+}
+
+.about-label {
+  color: #8b95a5;
+  font-size: 14px;
+}
+
+.about-value {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.about-description {
+  margin-bottom: 24px;
+}
+
+.about-description p {
+  color: #b0b8c4;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.about-links {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.about-link {
+  padding: 10px 20px;
+  background: #3a4450;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.about-link:hover {
+  background: #4a5460;
+  border-color: #4CAF50;
+}
+
+.about-footer {
+  padding: 16px 24px;
+  background: #232931;
+  border-top: 1px solid #3a4450;
+  text-align: center;
+}
+
+.about-footer p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 12px;
+}

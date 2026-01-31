@@ -1,0 +1,169 @@
+.options-tab {
+  padding: 40px;
+  color: white;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== TITLE ===== */
+
+.options-tab h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 32px;
+  color: #fff;
+}
+
+/* ===== FORM GROUP ===== */
+
+.options-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* ===== LABELS ===== */
+
+.options-tab label {
+  display: block;
+  font-size: 14px;
+  color: #b0b8c4;
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+/* ===== INPUTS ===== */
+
+.options-tab input,
+.options-tab select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: #232931;
+  border: 1px solid #3a4450;
+  color: white;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.options-tab input:hover,
+.options-tab select:hover {
+  border-color: #4a5460;
+}
+
+.options-tab input:focus,
+.options-tab select:focus {
+  border-color: #4CAF50;
+  background: #1a1f27;
+}
+
+.options-tab input::placeholder {
+  color: #6b7280;
+}
+
+/* ===== SELECT DROPDOWN ===== */
+
+.options-tab select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  padding-right: 40px;
+
+  background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 24 24' fill='%238b95a5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+
+.options-tab option {
+  background: #232931;
+  color: white;
+}
+
+/* ===== SAVE BUTTON ===== */
+
+.options-tab button {
+  margin-top: 32px;
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.options-tab button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.options-tab button:active {
+  transform: translateY(0);
+}
+
+.options-tab button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ===== SUCCESS/ERROR MESSAGES ===== */
+
+.options-message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.options-message.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.options-message.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+/* ===== FORM SECTIONS ===== */
+
+.options-section {
+  margin-bottom: 40px;
+}
+
+.options-section:last-child {
+  margin-bottom: 0;
+}
+
+.options-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3a4450;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 600px) {
+  .options-tab {
+    padding: 24px;
+  }
+
+  .options-tab h1 {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+}

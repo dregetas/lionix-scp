@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header.jsx";
 import Sidebar from "../../components/Sidebar/Sidebar.jsx";
 import ServerTab from "../../components/Server/ServerTab.jsx";
+import OptionsTab from "../../components/Options/OptionsTab.jsx";
+
 import ConsoleTab from "../../components/Console/ConsoleTab.jsx";
 import "./Dashboard.css";
 
-const Dashboard = () => {
+const Dashboard = ({onOpenSettings, onOpenAbout}) => {
   const [activeTab, setActiveTab] = useState("server");
   const [consoleLogs, setConsoleLogs] = useState([]);
 
@@ -23,7 +25,7 @@ const Dashboard = () => {
         );
 
       case "options":
-        return <h2>Under Construction</h2>;
+        return <OptionsTab />;
 
       case "journal":
         return <h2>Under Construction</h2>;
@@ -51,7 +53,10 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <Header />
+      <Header 
+          onOpenSettings={onOpenSettings}
+          onOpenAbout={onOpenAbout} 
+      />
 
       <div className="dashboard-body">
         <Sidebar activeTab={activeTab} onChange={setActiveTab} />

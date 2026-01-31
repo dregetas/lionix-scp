@@ -30,7 +30,7 @@ const Sidebar = ({ activeTab, onChange }) => {
         window.open("https://github.com/lionix-studio/lionix-scp", "_blank")
       }>
         <span className="build-type">ALPHA </span>
-        <span className="version-text">v0.1.1</span>
+        <span className="version-text">v0.2.0</span>
       </div>
     </aside>
   );

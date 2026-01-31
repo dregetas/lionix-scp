@@ -1,10 +1,11 @@
-import { IoMdSettings } from "react-icons/io";
+import { IoMdSettings, IoMdInformationCircleOutline } from "react-icons/io";
 import { MdOutlineAccountCircle, MdOutlineExitToApp } from "react-icons/md";
 import "./Header.css";
 
-const Header = () => {
+const Header = ({ onOpenSettings, onOpenAbout }) => {
+
   const handleSettings = () => {
-    console.log("Open settings");
+    onOpenSettings();
   };
 
   const handleProfile = () => {
@@ -13,16 +14,25 @@ const Header = () => {
 
   const handleExit = () => {
     console.log("Exit app");
-    // тут пізніше: invoke("close_app") або logout
   };
+  
+  const handleInfo = () => {
+    onOpenAbout();
+  };
+
 
   return (
     <header className="header">
       <h1 className="logo">LSCP</h1>
 
       <nav className="header-nav">
+
         <button onClick={handleSettings} title="Settings">
           <IoMdSettings />
+        </button>
+
+        <button onClick={handleInfo} title="Info">
+          <IoMdInformationCircleOutline />
         </button>
 
         <button onClick={handleProfile} title="Profile">
@@ -32,6 +42,7 @@ const Header = () => {
         <button onClick={handleExit} title="Exit">
           <MdOutlineExitToApp />
         </button>
+
       </nav>
     </header>
   );
